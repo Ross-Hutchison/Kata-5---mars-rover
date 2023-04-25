@@ -21,7 +21,7 @@ public class Tests
     public void CanMoveRoverForwards(Direction initialFacing, int expectedX, int expectedY)
     {
         var rover = new Rover(0, 0, initialFacing);
-        rover.MoveForwards();
+        rover.Move(new []{Move.Forward(1)});
         rover.X.Should().Be(expectedX);
         rover.Y.Should().Be(expectedY);
     }
@@ -33,7 +33,7 @@ public class Tests
     public void CanMoveRoverBackwards(Direction initialFacing, int expectedX, int expectedY)
     {
         var rover = new Rover(0, 0, initialFacing);
-        rover.MoveBackwards();
+        rover.Move(new []{Move.Backward(1)});
         rover.X.Should().Be(expectedX);
         rover.Y.Should().Be(expectedY);
     }
@@ -45,7 +45,7 @@ public class Tests
     public void CanTurnRoverLeft(Direction initialFacing, Direction expectedFacing)
     {
         var rover = new Rover(0, 0, initialFacing);
-        rover.TurnLeft();
+        rover.Move(new []{Move.Left(1)});
         rover.Facing.Should().Be(expectedFacing);
     }
     
@@ -56,14 +56,17 @@ public class Tests
     public void CanTurnRoverRight(Direction initialFacing, Direction expectedFacing)
     {
         var rover = new Rover(0, 0, initialFacing);
-        rover.TurnRight();
+        rover.Move(new []{Move.Right(1)});
         rover.Facing.Should().Be(expectedFacing);
     }
 
-    // [Test]
-    // public void X()
-    // {
-    //     var rover = new Rover(0, 0, Direction.North);
-    //     rover.Move(new []{(Forward,1), (Backward,1), (Left,1), (Right,1)});
-    // }
+    [Test]
+    public void CanMoveMultipleTimes()
+    {
+        var rover = new Rover(0, 0, Direction.North);
+        rover.Move(new []{Move.Forward(1), Move.Backward(1), Move.Left(1), Move.Right(2)});
+        rover.Facing.Should().Be(Direction.East);
+        rover.X.Should().Be(0);
+        rover.Y.Should().Be(0);
+    }
 }

@@ -1,5 +1,21 @@
 namespace Kata_5_MR;
 
+public record Move(MoveDirection Direction, int Magnitude)
+{
+    public static Move Forward(int magnitude) => new(MoveDirection.Forward, magnitude);
+    public static Move Backward(int magnitude) => new(MoveDirection.Backward, magnitude);
+    public static Move Left(int magnitude) => new(MoveDirection.Left, magnitude);
+    public static Move Right(int magnitude) => new(MoveDirection.Right, magnitude);
+};
+
+public enum MoveDirection
+{
+    Forward,
+    Backward,
+    Left,
+    Right
+}
+
 public class Rover
 {
     public int X { get; private set; }
@@ -12,51 +28,83 @@ public class Rover
         Y = y;
         Facing = facing;
     }
-    
 
-    public void MoveForwards()
+    public void Move(IReadOnlyCollection<Move> moves)
+    {
+        foreach (var move in moves)
+        {
+            switch (move.Direction)
+            {
+                case MoveDirection.Forward:
+                    MoveForwards(move.Magnitude);
+                    break;
+                case MoveDirection.Backward:
+                    MoveBackwards(move.Magnitude);
+                    break;
+                case MoveDirection.Left:
+                    TurnLeft(move.Magnitude);
+                    break;
+                case MoveDirection.Right:
+                    TurnRight(move.Magnitude);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
+
+
+    public void MoveForwards(int magnitude)
     {
         switch (Facing)
         {
             case Direction.North:
-                Y++;
+                Y += magnitude;
                 break;
             case Direction.South:
-                Y--;
+                Y -= magnitude;
                 break;
             case Direction.East:
-                X++;
+                X += magnitude;
                 break;
             case Direction.West:
-                X--;
+                X -= magnitude;
                 break;
             default:
                 return;
         }
     }
-    
-    public void MoveBackwards()
+
+    public void MoveBackwards(int magnitude)
     {
         switch (Facing)
         {
             case Direction.North:
-                Y--;
+                Y -= magnitude;
                 break;
             case Direction.South:
-                Y++;
+                Y += magnitude;
                 break;
             case Direction.East:
-                X--;
+                X -= magnitude;
                 break;
             case Direction.West:
-                X++;
+                X += magnitude;
                 break;
             default:
                 return;
         }
     }
 
-    public void TurnLeft()
+    private void TurnLeft(int magnitude)
+    {
+        for (var i = 0; i < magnitude; i++)
+        {
+            TurnLeft();
+        }
+    }
+
+    private void TurnLeft()
     {
         switch (Facing)
         {
@@ -77,7 +125,15 @@ public class Rover
         }
     }
 
-    public void TurnRight()
+    private void TurnRight(int magnitude)
+    {
+        for (var i = 0; i < magnitude; i++)
+        {
+            TurnRight();
+        }
+    }
+
+    private void TurnRight()
     {
         switch (Facing)
         {
