@@ -69,4 +69,10 @@ public class Tests
         rover.X.Should().Be(0);
         rover.Y.Should().Be(0);
     }
+
+    [Test]
+    public void CanMoveAroundEdges()
+    {
+        var rover = new Rover(0, 0, Direction.North);
+    }
 }
